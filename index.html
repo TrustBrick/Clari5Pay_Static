@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clari5Pay Verify & Financial Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0F172A;
+  --secondary:#1E3A8A;
+  --accent:#2563EB;
+  --highlight:#3B82F6;
+  --success:#22C55E;
+  --warning:#F59E0B;
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --border:#E5E7EB;
+  --text-dark:#0F172A;
+  --text-muted:#64748B;
+  --radius:18px;
+  --shadow-sm:0 2px 8px rgba(15,23,42,.06);
+  --shadow-md:0 8px 30px rgba(15,23,42,.08);
+  --shadow-lg:0 20px 60px rgba(15,23,42,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text-dark);
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+img{max-width:100%;display:block;}
+.container{max-width:1280px;margin:0 auto;padding:0 32px;}
+.eyebrow{
+  display:inline-block;
+  font-size:12.5px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:14px;
+}
+.section-head{text-align:center;max-width:640px;margin:0 auto 56px;}
+.section-head h2{font-size:clamp(28px,3.4vw,40px);font-weight:700;color:var(--primary);letter-spacing:-.01em;line-height:1.2;}
+.section-head p{margin-top:14px;font-size:16.5px;color:var(--text-muted);line-height:1.6;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 26px;border-radius:12px;font-weight:600;font-size:15px;
+  cursor:pointer;border:none;transition:.25s ease;white-space:nowrap;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),var(--highlight));
+  color:#fff;box-shadow:0 8px 24px rgba(37,99,235,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45);}
+.btn-outline{
+  background:rgba(255,255,255,.06);
+  border:1.5px solid rgba(255,255,255,.35);
+  color:#fff;
+  backdrop-filter:blur(6px);
+}
+.btn-outline:hover{background:rgba(255,255,255,.14);transform:translateY(-2px);}
+.btn-outline.dark{border-color:var(--border);color:var(--primary);background:#fff;}
+.btn-outline.dark:hover{background:#F1F5F9;}
+
+/* ===== NAV ===== */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:20px 0;transition:.35s ease;
+}
+.navbar.scrolled{
+  background:rgba(255,255,255,.92);backdrop-filter:blur(14px);
+  padding:14px 0;box-shadow:0 4px 24px rgba(15,23,42,.06);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;color:#fff;transition:.35s;letter-spacing:-.02em;}
+.navbar.scrolled .logo{color:var(--primary);}
+.logo span{color:var(--highlight);}
+.nav-links{display:flex;gap:36px;font-size:14.5px;font-weight:500;color:rgba(255,255,255,.85);transition:.35s;}
+.navbar.scrolled .nav-links{color:var(--text-dark);}
+.nav-links a{position:relative;padding:4px 0;}
+.nav-links a:hover{color:var(--highlight);}
+.nav-right{display:flex;gap:12px;align-items:center;}
+.nav-right .btn-outline{padding:10px 20px;font-size:14px;}
+.nav-right .btn-primary{padding:10px 20px;font-size:14px;}
+.navbar.scrolled .btn-outline{border-color:var(--border);color:var(--primary);background:transparent;}
+.navbar.scrolled .btn-outline:hover{background:#F1F5F9;}
+.nav-toggle{display:none;}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;
+  background:radial-gradient(ellipse at 20% 20%,#132449 0%,var(--primary) 55%,#060b18 100%);
+  overflow:hidden;padding:140px 0 80px;
+}
+.hero-bg-lines{position:absolute;inset:0;opacity:.5;pointer-events:none;}
+.hero-particles{position:absolute;inset:0;pointer-events:none;}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--highlight);opacity:.6;animation:floatp 8s ease-in-out infinite;}
+@keyframes floatp{0%,100%{transform:translateY(0) translateX(0);opacity:.3;}50%{transform:translateY(-30px) translateX(10px);opacity:.9;}}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;position:relative;z-index:2;}
+.hero-eyebrow{display:flex;gap:8px;align-items:center;color:var(--highlight);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px;}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 12px var(--success);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hero h1{
+  font-size:clamp(34px,4.6vw,54px);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.02em;
+}
+.hero h1 .accent{background:linear-gradient(90deg,#60A5FA,#3B82F6 60%,#93C5FD);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero .subtitle{margin-top:20px;font-size:19px;font-weight:600;color:#BFDBFE;}
+.hero .desc{margin-top:16px;font-size:16px;line-height:1.7;color:#94A3B8;max-width:560px;}
+.hero-ctas{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+.trust-badges{display:flex;gap:26px;margin-top:38px;flex-wrap:wrap;}
+.trust-badges div{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#CBD5E1;font-weight:500;}
+.trust-badges svg{width:16px;height:16px;color:var(--success);flex-shrink:0;}
+
+/* hero visual */
+.hero-visual{position:relative;height:520px;}
+.laptop-wrap{
+  position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+  width:390px;perspective:1200px;
+}
+.laptop{
+  background:linear-gradient(145deg,#1e293b,#0f172a);
+  border-radius:14px;padding:10px 10px 34px;
+  box-shadow:0 40px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);
+  transform:rotateY(-8deg) rotateX(3deg);
+  animation:floatlaptop 6s ease-in-out infinite;
+}
+@keyframes floatlaptop{0%,100%{transform:rotateY(-8deg) rotateX(3deg) translateY(0);}50%{transform:rotateY(-8deg) rotateX(3deg) translateY(-14px);}}
+.laptop-screen{
+  background:linear-gradient(160deg,#0b1a3a,#0F172A);
+  border-radius:8px;padding:14px;height:230px;
+  border:1px solid rgba(255,255,255,.06);
+}
+.laptop-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.laptop-topbar .brand{font-size:11px;color:#93C5FD;font-weight:700;}
+.laptop-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.laptop-stats div{background:rgba(255,255,255,.05);border-radius:8px;padding:8px;}
+.laptop-stats .num{font-size:13px;font-weight:700;color:#fff;}
+.laptop-stats .lbl{font-size:8px;color:#93A3B8;margin-top:2px;}
+.laptop-chart{height:80px;background:rgba(255,255,255,.04);border-radius:8px;display:flex;align-items:flex-end;gap:4px;padding:10px;}
+.laptop-chart span{flex:1;background:linear-gradient(180deg,#3B82F6,#1E3A8A);border-radius:2px;}
+
+.floating-card{
+  position:absolute;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(16px);
+  border-radius:14px;padding:12px 16px;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+  animation:floaty 5s ease-in-out infinite;
+}
+.floating-card .fc-icon{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  background:linear-gradient(135deg,var(--accent),var(--highlight));
+  flex-shrink:0;box-shadow:0 0 16px rgba(59,130,246,.5);
+}
+.floating-card span.label{font-size:12.5px;font-weight:600;color:#fff;white-space:nowrap;}
+@keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.fc1{top:2%;left:-4%;animation-delay:.2s;}
+.fc2{top:32%;left:-14%;animation-delay:1s;}
+.fc3{top:64%;left:-8%;animation-delay:1.8s;}
+.fc4{top:0%;right:-10%;animation-delay:.6s;}
+.fc5{top:34%;right:-16%;animation-delay:1.4s;}
+.fc6{top:66%;right:-8%;animation-delay:2.2s;}
+
+/* ===== TRUSTED BY ===== */
+.trusted{padding:64px 0;background:#fff;text-align:center;}
+.trusted h3{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:38px;}
+.trusted-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.trusted-item{flex:1;min-width:130px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 10px;border-radius:14px;transition:.3s;cursor:default;}
+.trusted-item:hover{background:var(--bg);transform:translateY(-4px);}
+.trusted-item .ic{width:44px;height:44px;border-radius:12px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;color:var(--accent);}
+.trusted-item span{font-size:14px;font-weight:600;color:var(--primary);}
+
+/* ===== CERT BADGES ===== */
+.cert-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:48px;}
+.cert-badge{
+  display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:12px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+}
+.cert-badge svg{color:var(--highlight);flex-shrink:0;}
+.cert-badge span{font-size:13.5px;font-weight:600;color:#E2E8F0;}
+.cert-row.compact{justify-content:flex-start;margin-top:0;gap:12px;}
+.cert-row.compact .cert-badge{padding:8px 14px;gap:7px;}
+.cert-row.compact .cert-badge span{font-size:12px;}
+.cert-row.compact .cert-badge svg{width:15px;height:15px;}
+
+/* ===== PRODUCT DEMO VIDEO ===== */
+.video-showcase{
+  position:relative;max-width:920px;margin:0 auto;border-radius:26px;overflow:hidden;
+  box-shadow:0 30px 70px rgba(15,23,42,.35);border:1px solid rgba(255,255,255,.08);
+  background:#000;
+}
+.video-showcase video{width:100%;height:auto;aspect-ratio:16/9;display:block;}
+
+/* ===== GENERIC SECTION ===== */
+.section{padding:100px 0;}
+.section.alt{background:#fff;}
+.section.tint{background:linear-gradient(180deg,#F8FAFC,#EFF4FB);}
+.section.blue-tint{background:#EEF3FC;}
+.section.dark{background:radial-gradient(ellipse at top,#152447,#0B1120);color:#fff;}
+
+/* ===== PLATFORM OVERVIEW ===== */
+.platform-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:70px;align-items:center;}
+.orbit-wrap{position:relative;width:100%;max-width:480px;aspect-ratio:1;margin:0 auto;}
+.orbit-ring{position:absolute;border:1.5px dashed #CBD5E1;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);}
+.orbit-ring.r1{width:100%;height:100%;}
+.orbit-ring.r2{width:70%;height:70%;}
+.orbit-center-group{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;z-index:3;
+}
+.orbit-center{
+  width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#3B82F6,#1E3A8A 60%,#0F172A);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;
+  box-shadow:0 0 60px rgba(37,99,235,.45),inset 0 0 20px rgba(255,255,255,.15);
+}
+.orbit-center-label{
+  font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:var(--primary);
+  letter-spacing:.01em;white-space:nowrap;
+}
+.orbit-node{
+  position:absolute;display:flex;flex-direction:column;align-items:center;gap:6px;
+  width:88px;text-align:center;
+}
+.orbit-node .n-ic{
+  width:50px;height:50px;border-radius:14px;background:#fff;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;color:var(--accent);box-shadow:var(--shadow-sm);
+}
+.orbit-node span{font-size:11.5px;font-weight:600;color:var(--primary);}
+.platform-copy h2{font-size:clamp(26px,3vw,36px);font-weight:700;color:var(--primary);line-height:1.25;margin-bottom:22px;}
+.check-list{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;margin-bottom:24px;}
+.check-list li{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--primary);}
+.check-list li .ck{width:20px;height:20px;border-radius:50%;background:#DCFCE7;color:var(--success);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.platform-copy p{color:var(--text-muted);line-height:1.7;font-size:15.5px;}
+
+/* ===== CARD GRIDS ===== */
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.card-grid.cols-2{grid-template-columns:repeat(2,1fr);}
+.feature-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:30px 26px;transition:.3s ease;
+}
+.feature-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:#DBEAFE;}
+.feature-card .f-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,#EFF6FF,#DBEAFE);
+  display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:18px;
+}
+.feature-card h4{font-size:17px;font-weight:600;color:var(--primary);margin-bottom:8px;}
+.feature-card p{font-size:14px;color:var(--text-muted);line-height:1.6;}
+
+.dark-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--radius);padding:28px 24px;transition:.3s;
+}
+.dark-card:hover{background:rgba(255,255,255,.07);transform:translateY(-5px);border-color:rgba(59,130,246,.4);}
+.dark-card .f-icon{
+  width:50px;height:50px;border-radius:13px;background:rgba(59,130,246,.15);
+  display:flex;align-items:center;justify-content:center;color:var(--highlight);margin-bottom:16px;
+  box-shadow:0 0 20px rgba(59,130,246,.25);
+}
+.dark-card h4{font-size:15.5px;font-weight:600;color:#fff;}
+
+/* ===== TWO COL FEATURE ===== */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.split h2{font-size:clamp(24px,2.6vw,32px);font-weight:700;color:var(--primary);margin-bottom:12px;line-height:1.3;}
+.split > div > p.lead{color:var(--text-muted);font-size:15.5px;margin-bottom:28px;line-height:1.6;}
+.mini-list{display:flex;flex-direction:column;gap:0;}
+.mini-list .mi{
+  display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);font-size:14.5px;font-weight:500;
+}
+.mini-list .mi .mic{width:30px;height:30px;border-radius:8px;background:#EFF6FF;color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dash-mock{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:var(--shadow-md);
+}
+.dash-mock .dm-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.dash-mock .dm-row span{font-size:12px;color:var(--text-muted);font-weight:600;}
+.dash-table{width:100%;border-collapse:collapse;font-size:12px;}
+.dash-table th{text-align:left;color:var(--text-muted);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--border);}
+.dash-table td{padding:8px;border-bottom:1px solid #F1F5F9;color:var(--primary);}
+.badge{padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;}
+.badge.low{background:#DCFCE7;color:#16A34A;}
+.badge.high{background:#FEE2E2;color:#DC2626;}
+.badge.med{background:#FEF3C7;color:#D97706;}
+.mini-chart-row{display:flex;gap:14px;margin-top:16px;}
+.mini-line{flex:1;height:70px;background:#F8FAFC;border-radius:10px;border:1px solid var(--border);position:relative;overflow:hidden;}
+.mini-donut{width:70px;height:70px;border-radius:50%;background:conic-gradient(var(--accent) 0% 65%,var(--warning) 65% 85%,var(--border) 85% 100%);flex-shrink:0;}
+
+/* ===== TIMELINE (Accounting) ===== */
+.flow-row{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:60px;}
+.flow-step{
+  display:flex;flex-direction:column;align-items:center;gap:10px;min-width:110px;text-align:center;
+}
+.flow-step .fs-ic{
+  width:56px;height:56px;border-radius:16px;background:#fff;border:1px solid var(--border);box-shadow:var(--shadow-sm);
+  display:flex;align-items:center;justify-content:center;color:var(--accent);
+}
+.flow-step span{font-size:13px;font-weight:600;color:var(--primary);}
+.flow-arrow{color:#CBD5E1;font-size:18px;padding-bottom:24px;}
+
+/* ===== MAKER CHECKER ===== */
+.mc-flow{display:flex;align-items:stretch;justify-content:center;gap:0;flex-wrap:wrap;margin-bottom:56px;}
+.mc-step{
+  background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px 22px;width:190px;text-align:center;
+  box-shadow:var(--shadow-sm);position:relative;
+}
+.mc-step .mc-ic{
+  width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#FEF3C7,#FDE68A);
+  display:flex;align-items:center;justify-content:center;color:#D97706;margin:0 auto 14px;
+}
+.mc-step h5{font-size:14.5px;font-weight:700;color:var(--primary);margin-bottom:4px;}
+.mc-step p{font-size:12px;color:var(--text-muted);}
+.mc-arrow{display:flex;align-items:center;color:#CBD5E1;font-size:20px;padding:0 4px;}
+
+/* ===== DASHBOARD PREVIEW ===== */
+.dashboard-wrap{position:relative;}
+.dash-big{
+  background:linear-gradient(160deg,#0F172A,#1E293B);border-radius:24px;padding:26px;
+  box-shadow:0 30px 80px rgba(15,23,42,.35);display:grid;grid-template-columns:180px 1fr;gap:0;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+}
+.dash-sidebar{padding:6px 14px 0 0;border-right:1px solid rgba(255,255,255,.08);}
+.dash-sidebar .sb-logo{color:#fff;font-weight:800;font-family:'Poppins';font-size:16px;margin-bottom:26px;}
+.dash-sidebar .sb-item{padding:11px 12px;border-radius:9px;font-size:12.5px;color:#94A3B8;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:9px;}
+.dash-sidebar .sb-item.active{background:rgba(59,130,246,.18);color:#fff;}
+.dash-main{padding:6px 4px 6px 26px;}
+.dash-main-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.dash-main-top h4{color:#fff;font-size:16px;font-weight:600;}
+.dash-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.kpi-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 16px;}
+.kpi-card .kv{color:#fff;font-size:19px;font-weight:700;}
+.kpi-card .kl{color:#94A3B8;font-size:11px;margin-top:3px;}
+.kpi-card .kd{font-size:10.5px;margin-top:6px;color:#4ADE80;font-weight:600;}
+.dash-charts-row{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;}
+.chart-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;}
+.chart-box .cb-title{color:#CBD5E1;font-size:11.5px;font-weight:600;margin-bottom:12px;}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:90px;}
+.bar-chart span{flex:1;background:linear-gradient(180deg,#3B82F6,#1E3A8A);border-radius:3px 3px 0 0;}
+.dash-float{
+  position:absolute;background:#fff;border-radius:16px;padding:16px 20px;box-shadow:var(--shadow-lg);border:1px solid var(--border);
+  min-width:150px;
+}
+.dash-float .dv{font-size:22px;font-weight:800;color:var(--primary);}
+.dash-float .dl{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.df1{top:-4%;left:-6%;}
+.df2{top:20%;right:-7%;}
+.df3{bottom:14%;left:-8%;}
+.df4{bottom:-6%;right:-5%;}
+
+/* ===== INDUSTRY / SECURITY / INTEGRATIONS ===== */
+.industry-card{
+  border-radius:var(--radius);overflow:hidden;background:#fff;border:1px solid var(--border);transition:.3s;
+}
+.industry-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+.industry-card .ind-top{
+  height:130px;background:linear-gradient(135deg,var(--secondary),var(--accent));
+  display:flex;align-items:center;justify-content:center;color:#fff;position:relative;overflow:hidden;
+}
+.industry-card .ind-top svg{width:46px;height:46px;position:relative;z-index:2;}
+.industry-card .ind-body{padding:22px 24px;}
+.industry-card h4{font-size:16.5px;font-weight:600;color:var(--primary);margin-bottom:6px;}
+.industry-card p{font-size:13.5px;color:var(--text-muted);line-height:1.55;}
+
+.integration-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.integ-item{
+  border:1px solid var(--border);border-radius:14px;padding:22px 14px;text-align:center;background:#fff;transition:.25s;
+}
+.integ-item:hover{border-color:var(--accent);box-shadow:var(--shadow-sm);transform:translateY(-3px);}
+.integ-item .ic{width:42px;height:42px;margin:0 auto 12px;border-radius:11px;background:#EFF6FF;color:var(--accent);display:flex;align-items:center;justify-content:center;}
+.integ-item span{font-size:13px;font-weight:600;color:var(--primary);}
+
+/* ===== CTA ===== */
+.cta-section{
+  background:radial-gradient(ellipse at 30% 20%,#1E40AF,#0F172A 70%);
+  border-radius:32px;padding:80px 60px;text-align:center;position:relative;overflow:hidden;margin:0 32px;
+}
+.cta-section h2{color:#fff;font-size:clamp(26px,3.4vw,40px);font-weight:700;max-width:760px;margin:0 auto 18px;line-height:1.25;}
+.cta-section p{color:#BFDBFE;max-width:600px;margin:0 auto 34px;font-size:16px;line-height:1.6;}
+.cta-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+
+/* ===== FOOTER ===== */
+footer{background:#0B1120;color:#94A3B8;padding:70px 0 30px;}
+.footer-grid{display:grid;grid-template-columns:1.6fr repeat(5,1fr);gap:30px;margin-bottom:50px;}
+.footer-brand .logo{margin-bottom:14px;}
+.footer-brand p{font-size:13.5px;line-height:1.7;color:#64748B;max-width:260px;}
+.footer-col h5{color:#fff;font-size:13.5px;font-weight:600;margin-bottom:18px;}
+.footer-col ul li{margin-bottom:11px;font-size:13.5px;}
+.footer-col ul li a:hover{color:var(--highlight);}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);padding-top:26px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-bottom span{font-size:13px;color:#64748B;}
+.social-icons{display:flex;gap:12px;}
+.social-icons a{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;transition:.25s;}
+.social-icons a:hover{background:var(--accent);color:#fff;}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-visual{height:420px;margin-top:20px;}
+  .platform-grid,.split{grid-template-columns:1fr;gap:44px;}
+  .card-grid{grid-template-columns:repeat(2,1fr);}
+  .footer-grid{grid-template-columns:repeat(3,1fr);}
+  .integration-grid{grid-template-columns:repeat(3,1fr);}
+  .dash-kpis{grid-template-columns:repeat(2,1fr);}
+  .nav-links{display:none;}
+}
+@media(max-width:640px){
+  .container{padding:0 20px;}
+  .card-grid{grid-template-columns:1fr;}
+  .check-list{grid-template-columns:1fr;}
+  .trusted-grid{justify-content:center;}
+  .footer-grid{grid-template-columns:repeat(2,1fr);}
+  .integration-grid{grid-template-columns:repeat(2,1fr);}
+  .cta-section{padding:56px 24px;margin:0 16px;}
+  .nav-right .btn-outline{display:none;}
+  .fc2,.fc5{display:none;}
+  .hero-visual{height:340px;}
+  .laptop-wrap{width:280px;}
+  .floating-card{padding:8px 12px;}
+  .floating-card .fc-icon{width:26px;height:26px;}
+  .floating-card span.label{font-size:11px;}
+  .fc1{left:2%;}
+  .fc3{left:0%;}
+  .fc4{right:2%;}
+  .fc6{right:0%;}
+  .mc-flow{flex-direction:column;align-items:center;}
+  .mc-arrow{transform:rotate(90deg);padding:6px;}
+  .dash-charts-row{grid-template-columns:1fr;}
+  .dash-big{grid-template-columns:1fr;}
+  .dash-sidebar{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="container nav-inner">
+    <a href="#" class="logo">Clari<span>5</span>Pay</a>
+    <div class="nav-links">
+      <a href="#platform">Products</a>
+      <a href="#ekyc">Solutions</a>
+      <a href="#industries">Industries</a>
+      <a href="#security">Resources</a>
+      <a href="#footer">Company</a>
+      <a href="#">Docs</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn-outline">Contact Sales</button>
+      <button class="btn btn-primary">Request Demo</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-particles" id="particles"></div>
+  <svg class="hero-bg-lines" width="100%" height="100%" viewBox="0 0 1400 800" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,150 C300,50 500,300 800,180 S1200,80 1400,220" stroke="url(#lg1)" stroke-width="1.5" fill="none"/>
+    <path d="M0,500 C300,600 600,350 900,480 S1250,650 1400,500" stroke="url(#lg1)" stroke-width="1.5" fill="none"/>
+    <path d="M100,0 C250,250 200,500 450,650" stroke="url(#lg1)" stroke-width="1" fill="none"/>
+  </svg>
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-eyebrow"><span class="dot"></span> Enterprise Financial Intelligence</div>
+      <h1>Clari5Pay <span class="accent">Verify</span> &amp; Financial Intelligence Platform</h1>
+      <p class="subtitle">Verify. Monitor. Screen. Account. Approve — In Real Time.</p>
+      <p class="desc">Accelerate customer onboarding, strengthen compliance, and automate financial operations with real-time identity verification, transaction monitoring, AML screening, accounting automation, and maker-checker workflows.</p>
+      <div class="hero-ctas" style="align-items:center;">
+        <button class="btn btn-primary">Request Demo →</button>
+        <button class="btn btn-outline">Contact Sales</button>
+        <a href="#" style="color:#93C5FD;font-size:14.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;">View Documentation <span style="font-size:16px;">→</span></a>
+      </div>
+      <div class="trust-badges">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Real-Time Processing</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Enterprise Security</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Regulatory Compliance</div>
+      </div>
+      <div class="cert-row compact" style="margin-top:20px;">
+        <div class="cert-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg><span>SOC 2</span></div>
+        <div class="cert-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><span>ISO 27001</span></div>
+        <div class="cert-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>PCI DSS</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="laptop-wrap">
+        <div class="laptop">
+          <div class="laptop-screen">
+            <div class="laptop-topbar"><span class="brand">Clari5Pay Console</span><span style="width:6px;height:6px;border-radius:50%;background:#4ADE80;"></span></div>
+            <div class="laptop-stats">
+              <div><div class="num">1,24,580</div><div class="lbl">Total Verified</div></div>
+              <div><div class="num">320</div><div class="lbl">Alerts</div></div>
+              <div><div class="num">98.7%</div><div class="lbl">Success</div></div>
+            </div>
+            <div class="laptop-chart">
+              <span style="height:40%"></span><span style="height:65%"></span><span style="height:35%"></span>
+              <span style="height:80%"></span><span style="height:55%"></span><span style="height:70%"></span>
+              <span style="height:45%"></span><span style="height:90%"></span><span style="height:60%"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="floating-card fc1"><div class="fc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/></svg></div><span class="label">Government ID Verification</span></div>
+      <div class="floating-card fc2"><div class="fc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg></div><span class="label">Proof of Address</span></div>
+      <div class="floating-card fc3"><div class="fc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13M9 21v-6h6v6"/></svg></div><span class="label">Business Verification</span></div>
+      <div class="floating-card fc4"><div class="fc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div><span class="label">Transaction Monitoring</span></div>
+      <div class="floating-card fc5"><div class="fc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div><span class="label">AML Screening</span></div>
+      <div class="floating-card fc6"><div class="fc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div><span class="label">Maker-Checker</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- TRUSTED BY -->
+<section class="trusted">
+  <div class="container">
+    <h3>Trusted by Leading Institutions</h3>
+    <div class="trusted-grid reveal">
+      <div class="trusted-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg></div><span>Banks</span></div>
+      <div class="trusted-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V4h8v3"/></svg></div><span>NBFCs</span></div>
+      <div class="trusted-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 6h6M9 10h6M9 14h6"/></svg></div><span>Fintech</span></div>
+      <div class="trusted-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div><span>Insurance</span></div>
+      <div class="trusted-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10l7-6 7 6v11M9 21v-5h6v5"/></svg></div><span>Government</span></div>
+      <div class="trusted-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></svg></div><span>Enterprises</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM OVERVIEW -->
+<section class="section alt" id="platform">
+  <div class="container platform-grid">
+    <div class="orbit-wrap reveal">
+      <div class="orbit-ring r1"></div>
+      <div class="orbit-ring r2"></div>
+      <div class="orbit-center-group">
+        <div class="orbit-center">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5L16 9"/></svg>
+        </div>
+        <span class="orbit-center-label">Clari5Pay</span>
+      </div>
+      <div class="orbit-node" style="top:-6%;left:50%;transform:translate(-50%,0);">
+        <div class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><span>Identity</span>
+      </div>
+      <div class="orbit-node" style="top:16%;right:-8%;">
+        <div class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 15l4-6 3 4 5-8"/></svg></div><span>Monitoring</span>
+      </div>
+      <div class="orbit-node" style="bottom:16%;right:-8%;">
+        <div class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div><span>AML Screening</span>
+      </div>
+      <div class="orbit-node" style="bottom:-6%;left:50%;transform:translate(-50%,0);">
+        <div class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-4M9 3v6h6M9 3l11 11"/></svg></div><span>Accounting</span>
+      </div>
+      <div class="orbit-node" style="bottom:16%;left:-8%;">
+        <div class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M8 17V9M13 17V5M18 17v-7"/></svg></div><span>Reporting</span>
+      </div>
+      <div class="orbit-node" style="top:16%;left:-8%;">
+        <div class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 21c0-3.5 3-6 7-6s7 2.5 7 6M14 15c3 0 6 2 6 6"/></svg></div><span>Approvals</span>
+      </div>
+    </div>
+
+    <div class="platform-copy reveal">
+      <span class="eyebrow">One Platform</span>
+      <h2>Complete Compliance &amp; Financial Control.</h2>
+      <ul class="check-list">
+        <li><span class="ck">✓</span> Identity Verification</li>
+        <li><span class="ck">✓</span> AML Screening</li>
+        <li><span class="ck">✓</span> Transaction Monitoring</li>
+        <li><span class="ck">✓</span> Accounting Automation</li>
+        <li><span class="ck">✓</span> Workflow Management</li>
+        <li><span class="ck">✓</span> Regulatory Reporting</li>
+      </ul>
+      <p>Bring identity verification, risk monitoring, accounting and approvals together in one unified platform built for the scale and scrutiny of modern financial institutions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT DEMO VIDEO -->
+<section class="section alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">See It In Action</span>
+      <h2>Security Built Into Every Layer</h2>
+      <p>A closer look at how Clari5Pay visualizes identity, risk, and trust across every transaction.</p>
+    </div>
+    <div class="video-showcase reveal">
+      <video id="demoVideo" autoplay muted loop playsinline>
+        <source src="clari5pay-demo.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- eKYC -->
+<section class="section tint" id="ekyc">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Verification Suite</span>
+      <h2>Real-Time Identity Verification</h2>
+      <p>Verify customers instantly using secure, government-linked APIs — with deep regional document coverage built in.</p>
+    </div>
+    <div class="card-grid reveal">
+      <div class="feature-card">
+        <div class="f-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/></svg></div>
+        <h4>National ID Verification</h4><p>Instant government ID verification with biometric authentication.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M6 15h4M6 11h.01M16 9h2M16 13h2"/></svg></div>
+        <h4>Tax ID Verification</h4><p>Validate tax identification details and cross-check identity consistency.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M8 18c0-2 2-3 4-3s4 1 4 3"/></svg></div>
+        <h4>Passport Verification</h4><p>Confirm passport authenticity and holder identity globally.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h2"/></svg></div>
+        <h4>Driving Licence Verification</h4><p>Verify licence status and holder information in real time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M9 16l2 2 4-4"/></svg></div>
+        <h4>Proof of Address</h4><p>Validate address records against trusted, up-to-date sources.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M9 21v-6h6v6"/></svg></div>
+        <h4>Business Registration</h4><p>Authenticate business registration and enterprise details worldwide.</p>
+      </div>
+    </div>
+    <p class="reveal" style="text-align:center;margin-top:32px;font-size:14px;color:var(--text-muted);">Includes native support for regional document sets — Aadhaar, PAN &amp; Voter ID (India), and equivalents across 40+ markets.</p>
+  </div>
+</section>
+
+<!-- TRANSACTION MONITORING + AML -->
+<section class="section alt">
+  <div class="container">
+    <div class="card-grid cols-2 reveal" style="align-items:stretch;">
+      <!-- monitoring -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px;">
+        <span class="eyebrow">Real-Time Intelligence</span>
+        <h2 style="font-size:24px;font-weight:700;color:var(--primary);margin-bottom:8px;">Financial Transaction Monitoring</h2>
+        <p style="color:var(--text-muted);font-size:14.5px;margin-bottom:22px;">Monitor every transaction and detect suspicious activity in real time.</p>
+        <div class="dash-mock" style="box-shadow:none;border-radius:14px;">
+          <div class="dm-row"><span>LIVE TRANSACTIONS</span><span>Today</span></div>
+          <table class="dash-table">
+            <tr><th>Txn ID</th><th>Amount</th><th>Risk</th></tr>
+            <tr><td>TXN-8821</td><td>$4,250</td><td><span class="badge low">Low</span></td></tr>
+            <tr><td>TXN-8830</td><td>$125,000</td><td><span class="badge high">High</span></td></tr>
+            <tr><td>TXN-8841</td><td>$820</td><td><span class="badge med">Medium</span></td></tr>
+          </table>
+          <div class="mini-chart-row">
+            <div class="mini-line"></div>
+            <div class="mini-donut"></div>
+          </div>
+        </div>
+      </div>
+      <!-- feature list -->
+      <div style="display:flex;flex-direction:column;justify-content:center;">
+        <ul class="mini-list">
+          <li class="mi"><span class="mic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5l3 2"/><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/></svg></span> Real-Time Monitoring</li>
+          <li class="mi"><span class="mic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></span> Rule Engine</li>
+          <li class="mi"><span class="mic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M8 17V9M13 17V5M18 17v-7"/></svg></span> Threshold Monitoring</li>
+          <li class="mi"><span class="mic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span> Velocity Checks</li>
+          <li class="mi"><span class="mic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></span> Anomaly Detection</li>
+          <li class="mi"><span class="mic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a3.5 3.5 0 005 0l3-3a3.5 3.5 0 00-5-5l-1 1"/><path d="M14 10a3.5 3.5 0 00-5 0l-3 3a3.5 3.5 0 005 5l1-1"/></svg></span> Cross Account Monitoring</li>
+          <li class="mi"><span class="mic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2z"/><path d="M12 9v5M12 17h.01"/></svg></span> Risk Alerts</li>
+          <li class="mi" style="border-bottom:none;"><span class="mic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span> Live Analytics</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AML DARK -->
+<section class="section dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--highlight);">Risk &amp; Compliance</span>
+      <h2 style="color:#fff;">AML &amp; Compliance Screening</h2>
+      <p style="color:#94A3B8;">Protect every transaction with intelligent compliance screening.</p>
+    </div>
+    <div class="card-grid reveal">
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div><h4>Sanctions Screening</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><h4>PEP Screening</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div><h4>Watchlist Screening</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg></div><h4>Negative Media Checks</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M8 17V9M13 17V5M18 17v-7"/></svg></div><h4>Customer Risk Scoring</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></div><h4>Continuous Monitoring</h4></div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCOUNTING -->
+<section class="section alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Financial Operations</span>
+      <h2>Accounting &amp; Reconciliation</h2>
+      <p>Automate accounting and ensure accuracy across every transaction.</p>
+    </div>
+    <div class="flow-row reveal">
+      <div class="flow-step"><div class="fs-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><span>Transaction</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4h-4M9 3v6h6M9 3l6 6"/></svg></div><span>Journal Entry</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z"/></svg></div><span>Ledger Posting</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></div><span>GL Integration</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div><span>ERP Sync</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 15l4-6 3 4 5-8"/></svg></div><span>Financial Reports</span></div>
+    </div>
+    <div class="card-grid cols-2 reveal">
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></div><h4>Automatic Journal Creation</h4><p>System-generated journals for every posting event.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z"/></svg></div><h4>Ledger Posting</h4><p>Real-time, accurate ledger updates across accounts.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h4l10 12h4M16 6h4v4M2 18h4l3-5"/></svg></div><h4>Multi Account Mapping</h4><p>Map transactions across complex account hierarchies.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a3.5 3.5 0 005 0l3-3a3.5 3.5 0 00-5-5l-1 1"/><path d="M14 10a3.5 3.5 0 00-5 0l-3 3a3.5 3.5 0 005 5l1-1"/></svg></div><h4>GL Integration</h4><p>Seamless sync with your general ledger systems.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div><h4>Reconciliation</h4><p>Automated matching to close books faster.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2z"/><path d="M12 9v5M12 17h.01"/></svg></div><h4>Exception Handling</h4><p>Flag and route mismatches for quick resolution.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></svg></div><h4>ERP Integration</h4><p>Native connectors to leading ERP platforms.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><h4>Batch Processing</h4><p>High-volume batch runs with full traceability.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAKER CHECKER -->
+<section class="section blue-tint">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Governance</span>
+      <h2>Maker–Checker Workflow</h2>
+      <p>Secure every financial action with multi-level approvals and complete visibility.</p>
+    </div>
+    <div class="mc-flow reveal">
+      <div class="mc-step"><div class="mc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><h5>Maker</h5><p>Initiates the action</p></div>
+      <div class="mc-arrow">→</div>
+      <div class="mc-step"><div class="mc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div><h5>Review</h5><p>Assessed for accuracy</p></div>
+      <div class="mc-arrow">→</div>
+      <div class="mc-step"><div class="mc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><h5>Checker</h5><p>Approves the request</p></div>
+      <div class="mc-arrow">→</div>
+      <div class="mc-step"><div class="mc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div><h5>Approval</h5><p>Action authorized</p></div>
+      <div class="mc-arrow">→</div>
+      <div class="mc-step"><div class="mc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><h5>Audit Trail</h5><p>Fully logged &amp; traceable</p></div>
+    </div>
+    <div class="card-grid reveal">
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div><h4>Role-Based Access</h4><p>Grant permissions aligned to responsibilities.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="1.6"/><circle cx="16" cy="12" r="1.6"/><circle cx="10" cy="18" r="1.6"/></svg></div><h4>Approval Limits</h4><p>Set thresholds by role, amount, or risk.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6z"/></svg></div><h4>Multi-Level Approval</h4><p>Route requests through layered sign-off.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11l5-5 5 5M7 17l5-5 5 5"/></svg></div><h4>Escalation Workflows</h4><p>Automatic escalation on delayed action.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 3V2a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11h6M9 15h6"/></svg></div><h4>Complete Audit Logs</h4><p>Immutable records of every decision.</p></div>
+      <div class="feature-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5-9 5-9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></div><h4>Segregation of Duties</h4><p>Prevent conflicts between makers and checkers.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<section class="section alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Unified Dashboard</span>
+      <h2>Get Complete Visibility, In Real Time.</h2>
+      <p>One command center for verification, monitoring, approvals, and financial reporting.</p>
+    </div>
+    <div class="dashboard-wrap reveal" style="max-width:980px;margin:0 auto;position:relative;padding:40px 0;">
+      <div class="dash-big">
+        <div class="dash-sidebar">
+          <div class="sb-logo">Clari<span style="color:var(--highlight);">5</span>Pay</div>
+          <div class="sb-item active"><span style="display:inline-flex;width:14px;height:14px;margin-right:9px;vertical-align:-2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>Dashboard</div>
+          <div class="sb-item"><span style="display:inline-flex;width:14px;height:14px;margin-right:9px;vertical-align:-2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/></svg></span>eKYC</div>
+          <div class="sb-item"><span style="display:inline-flex;width:14px;height:14px;margin-right:9px;vertical-align:-2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span>Monitoring</div>
+          <div class="sb-item"><span style="display:inline-flex;width:14px;height:14px;margin-right:9px;vertical-align:-2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></span>AML Screening</div>
+          <div class="sb-item"><span style="display:inline-flex;width:14px;height:14px;margin-right:9px;vertical-align:-2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z"/></svg></span>Accounting</div>
+          <div class="sb-item"><span style="display:inline-flex;width:14px;height:14px;margin-right:9px;vertical-align:-2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span>Approvals</div>
+          <div class="sb-item"><span style="display:inline-flex;width:14px;height:14px;margin-right:9px;vertical-align:-2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></span>Reports</div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-main-top"><h4>Overview</h4><span style="color:#94A3B8;font-size:12px;">Today, Aug 07 2026</span></div>
+          <div class="dash-kpis">
+            <div class="kpi-card"><div class="kv">98.7%</div><div class="kl">Verification Success</div><div class="kd">▲ 12.5%</div></div>
+            <div class="kpi-card"><div class="kv">35</div><div class="kl">AML Alerts</div><div class="kd" style="color:#F59E0B;">▲ 6.2%</div></div>
+            <div class="kpi-card"><div class="kv">127</div><div class="kl">Pending Approvals</div><div class="kd" style="color:#F59E0B;">▲ 15.3%</div></div>
+            <div class="kpi-card"><div class="kv">$1.2M</div><div class="kl">Today's Transactions</div><div class="kd">▲ 9.4%</div></div>
+          </div>
+          <div class="dash-charts-row">
+            <div class="chart-box"><div class="cb-title">TRANSACTION VOLUME</div>
+              <div class="bar-chart">
+                <span style="height:40%"></span><span style="height:60%"></span><span style="height:35%"></span><span style="height:75%"></span>
+                <span style="height:50%"></span><span style="height:85%"></span><span style="height:65%"></span><span style="height:90%"></span>
+                <span style="height:55%"></span><span style="height:70%"></span>
+              </div>
+            </div>
+            <div class="chart-box"><div class="cb-title">RISK ALERTS TREND</div>
+              <div class="bar-chart">
+                <span style="height:30%;background:linear-gradient(180deg,#F59E0B,#92400E);"></span>
+                <span style="height:55%;background:linear-gradient(180deg,#F59E0B,#92400E);"></span>
+                <span style="height:40%;background:linear-gradient(180deg,#F59E0B,#92400E);"></span>
+                <span style="height:70%;background:linear-gradient(180deg,#F59E0B,#92400E);"></span>
+                <span style="height:45%;background:linear-gradient(180deg,#F59E0B,#92400E);"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dash-float df1"><div class="dv">98.7%</div><div class="dl">Verification Success</div></div>
+      <div class="dash-float df2"><div class="dv">35</div><div class="dl">AML Alerts</div></div>
+      <div class="dash-float df3"><div class="dv">127</div><div class="dl">Pending Approvals</div></div>
+      <div class="dash-float df4"><div class="dv">$1.2M</div><div class="dl">Today's Transactions</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRY SOLUTIONS -->
+<section class="section tint" id="industries">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Industry Solutions</span>
+      <h2>Built For Every Regulated Institution</h2>
+      <p>Purpose-built configurations for the industries that need compliance most.</p>
+    </div>
+    <div class="card-grid reveal">
+      <div class="industry-card"><div class="ind-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg></div><div class="ind-body"><h4>Banking</h4><p>End-to-end compliance for retail and corporate banking.</p></div></div>
+      <div class="industry-card"><div class="ind-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V4h8v3"/></svg></div><div class="ind-body"><h4>NBFC</h4><p>Streamlined onboarding and lending risk controls.</p></div></div>
+      <div class="industry-card"><div class="ind-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 6h6M9 10h6M9 14h6"/></svg></div><div class="ind-body"><h4>Fintech</h4><p>API-first verification built for rapid product velocity.</p></div></div>
+      <div class="industry-card"><div class="ind-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div><div class="ind-body"><h4>Insurance</h4><p>Fraud detection across policy issuance and claims.</p></div></div>
+      <div class="industry-card"><div class="ind-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M8 17V9M13 17V5M18 17v-7"/></svg></div><div class="ind-body"><h4>Lending</h4><p>Automated underwriting checks and disbursal controls.</p></div></div>
+      <div class="industry-card"><div class="ind-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10l7-6 7 6v11M9 21v-5h6v5"/></svg></div><div class="ind-body"><h4>Government</h4><p>Citizen-scale identity and financial oversight systems.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="section dark" id="security">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--highlight);">Trust &amp; Assurance</span>
+      <h2 style="color:#fff;">Enterprise Security &amp; Compliance</h2>
+      <p style="color:#94A3B8;">Built to meet the strictest standards financial institutions demand.</p>
+    </div>
+    <div class="card-grid reveal">
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div><h4>Data Encryption</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 21c0-3.5 3-6 7-6s7 2.5 7 6M14 15c3 0 6 2 6 6"/></svg></div><h4>Role-Based Access</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div><h4>Multi-Factor Authentication</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 3V2a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11h6M9 15h6"/></svg></div><h4>Immutable Audit Logs</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6M15 2v6M7 8h10v4a5 5 0 01-10 0z"/><path d="M12 17v5"/></svg></div><h4>API Security</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><h4>Compliance Reporting</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18a4 4 0 010-8 5 5 0 019.6-1.5A4.5 4.5 0 0118 18H6z"/></svg></div><h4>Cloud Security</h4></div>
+      <div class="dark-card"><div class="f-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="14" r="4"/><path d="M11 11l9-9M17 5l3 3M14 8l2 2"/></svg></div><h4>Secure Authentication</h4></div>
+    </div>
+    <div class="cert-row reveal">
+      <div class="cert-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg><span>SOC 2 Type II</span></div>
+      <div class="cert-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><span>ISO 27001</span></div>
+      <div class="cert-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>PCI DSS Level 1</span></div>
+      <div class="cert-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg><span>GDPR Ready</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section class="section alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Connected Ecosystem</span>
+      <h2>Seamless Integrations</h2>
+      <p>Plug Clari5Pay directly into the systems you already run.</p>
+    </div>
+    <div class="integration-grid reveal">
+      <div class="integ-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg></div><span>Core Banking</span></div>
+      <div class="integ-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></svg></div><span>ERP</span></div>
+      <div class="integ-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z"/></svg></div><span>Accounting Software</span></div>
+      <div class="integ-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><span>CRM</span></div>
+      <div class="integ-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><span>Loan Management</span></div>
+      <div class="integ-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg></div><span>Treasury</span></div>
+      <div class="integ-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg></div><span>Government APIs</span></div>
+      <div class="integ-item"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><span>Payment Gateway</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:0 0 100px;">
+  <div class="cta-section reveal">
+    <h2>Accelerate Onboarding. Reduce Fraud. Strengthen Financial Control.</h2>
+    <p>Bring identity verification, transaction intelligence, AML screening, accounting automation, and maker-checker governance together in one enterprise platform.</p>
+    <div class="cta-btns">
+      <button class="btn btn-primary">Request Demo</button>
+      <button class="btn btn-outline">Talk to Sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="color:#fff;">Clari<span>5</span>Pay</div>
+        <p>Enterprise financial intelligence for identity verification, AML screening, transaction monitoring, and accounting automation.</p>
+      </div>
+      <div class="footer-col"><h5>Products</h5><ul><li><a href="#">eKYC</a></li><li><a href="#">Monitoring</a></li><li><a href="#">AML Screening</a></li><li><a href="#">Accounting</a></li></ul></div>
+      <div class="footer-col"><h5>Solutions</h5><ul><li><a href="#">Onboarding</a></li><li><a href="#">Fraud Prevention</a></li><li><a href="#">Governance</a></li></ul></div>
+      <div class="footer-col"><h5>Industries</h5><ul><li><a href="#">Banking</a></li><li><a href="#">NBFC</a></li><li><a href="#">Insurance</a></li></ul></div>
+      <div class="footer-col"><h5>Resources</h5><ul><li><a href="#">Documentation</a></li><li><a href="#">API Reference</a></li><li><a href="#">Blog</a></li></ul></div>
+      <div class="footer-col"><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="#">Support</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Clari5Pay Verify &amp; Financial Intelligence Platform</span>
+      <div class="social-icons">
+        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 20.4h-3.5v-5.5c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.6H9.5V9h3.4v1.6h.05c.5-.9 1.6-1.8 3.3-1.8 3.6 0 4.2 2.4 4.2 5.4v6.2zM5.3 7.4a2 2 0 110-4.1 2 2 0 010 4.1zM7 20.4H3.6V9H7v11.4z"/></svg></a>
+        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.9c-.7.3-1.5.6-2.3.7.8-.5 1.5-1.3 1.8-2.3-.8.5-1.7.8-2.6 1a4.1 4.1 0 00-7 3.7A11.6 11.6 0 013 4.9a4.1 4.1 0 001.3 5.5c-.6 0-1.3-.2-1.8-.5v.1c0 2 1.4 3.6 3.3 4a4.1 4.1 0 01-1.8.1 4.1 4.1 0 003.8 2.9A8.3 8.3 0 012 18.6a11.6 11.6 0 006.3 1.8c7.5 0 11.7-6.3 11.7-11.7v-.5c.8-.6 1.5-1.3 2-2.1z"/></svg></a>
+        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.1-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.7.3-1.1.6-1.4-2.2-.2-4.6-1.1-4.6-5a3.9 3.9 0 011-2.7c-.1-.2-.5-1.3.1-2.7 0 0 .9-.3 2.9 1a10 10 0 015.2 0c2-1.3 2.9-1 2.9-1 .6 1.4.2 2.5.1 2.7a3.9 3.9 0 011 2.7c0 3.9-2.4 4.7-4.6 5 .3.3.6.9.6 1.8v2.6c0 .3.2.6.7.5A10 10 0 0012 2z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// navbar scroll state
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 40) navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+});
+
+// particles
+const pWrap = document.getElementById('particles');
+for (let i = 0; i < 26; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random()*100 + '%';
+  p.style.top = Math.random()*100 + '%';
+  p.style.animationDelay = (Math.random()*6) + 's';
+  p.style.animationDuration = (6+Math.random()*5) + 's';
+  pWrap.appendChild(p);
+}
+
+// scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => io.observe(el));
+
+</script>
+</body>
+</html>
